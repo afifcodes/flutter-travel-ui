@@ -1,115 +1,224 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() =>
+    runApp(const MaterialApp(debugShowCheckedModeBanner: false, home: MyApp()));
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+  _MyAppState createState() => _MyAppState();
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class _MyAppState extends State<MyApp> {
+  final List<Map<String, String>> bannerImages = [
+    {
+      'title': 'Most Visited',
+      'image': 'most-visited.jpg',
+    },
+    {
+      'title': 'Top Rated',
+      'image': 'top-rated.jpg',
+    },
+    {
+      'title': 'Hidden Gems',
+      'image': 'hidden-gems.jpg',
+    },
+  ];
+  final List<Map<String, String>> places = [
+    {
+      'title': 'Bali Island',
+      'image': 'bali.jpg',
+    },
+    {
+      'title': 'Merapi Mountain',
+      'image': 'merapi-mountain.jpg',
+    },
+    {
+      'title': 'Raja Ampat',
+      'image': 'raja-ampat.jpg',
+    },
+  ];
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
+  //////////////////////////////
+  /// @withflutter
+  ///
+  /// afifudin.vercel.app
+  //////////////////////////////
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+        body: NestedScrollView(
+      physics: const BouncingScrollPhysics(),
+      headerSliverBuilder: (context, innerBoxIsScrolled) => [hero()],
+      body: ListView(
+        padding: const EdgeInsets.symmetric(vertical: 30),
+        physics: const BouncingScrollPhysics(),
+        children: [
+          SizedBox(
+            height: 140,
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              itemCount: bannerImages.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: EdgeInsets.only(
+                      left: index == 0 ? 24 : 0,
+                      right: index == bannerImages.length - 1 ? 24 : 8),
+                  width: 300,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage(
+                              "assets/images/${bannerImages[index]['image']}"))),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      color: Colors.black.withOpacity(0.3),
+                    ),
+                    child: Center(
+                      child: Text(
+                        bannerImages[index]['title']!,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 30),
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+          ),
+          const SizedBox(
+            height: 12,
+          ),
+          Container(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text(
+                  'Not sure where to go? try this',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                ),
+                SizedBox(
+                  height: 6,
+                ),
+                Text(
+                  'we will help you to find a very pleasant\ntravel experience',
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey),
+                )
+              ],
             ),
-          ],
-        ),
+          ),
+          SizedBox(
+            height: 250,
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              itemCount: places.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: EdgeInsets.only(
+                      left: index == 0 ? 24 : 0,
+                      right: index == places.length - 1 ? 24 : 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          width: 200,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage(
+                                      "assets/images/${places[index]['image']}"))),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Text(places[index]['title']!,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                          ))
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+    ));
   }
+}
+
+Widget hero() {
+  return SliverList(
+    delegate: SliverChildListDelegate([
+      Container(
+        padding: const EdgeInsets.all(24),
+        decoration: const BoxDecoration(
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(6)),
+            gradient: LinearGradient(
+                colors: [Colors.deepOrange, Colors.yellow],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight)),
+        child: SafeArea(
+          top: true,
+          bottom: false,
+          right: false,
+          left: false,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'How can we help \nyou, Humeyra?',
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white),
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(6)),
+                padding: const EdgeInsets.all(4),
+                child: TextField(
+                  style: const TextStyle(fontWeight: FontWeight.w500),
+                  textAlignVertical: TextAlignVertical.center,
+                  cursorColor: Colors.black,
+                  decoration: InputDecoration(
+                      hintText: 'Try Pandawa Beach',
+                      prefixIcon: const Icon(
+                        Icons.search,
+                        color: Colors.grey,
+                      ),
+                      suffixIcon: const Icon(
+                        Icons.mic,
+                        color: Colors.grey,
+                      ),
+                      border: InputBorder.none,
+                      hintStyle: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey.shade400)),
+                ),
+              )
+            ],
+          ),
+        ),
+      )
+    ]),
+  );
 }
